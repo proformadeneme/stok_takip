@@ -6,9 +6,9 @@ input, select, button, textarea { margin: 4px 0; padding: 6px; width: 100%; max-
 pre { background: #f6f8fa; padding: 10px; overflow: auto; }
 
 /* TR: Ürün tablosu için temel stiller */
-.table-products { width: 100%; border-collapse: collapse; margin-top: 10px; }
-.table-products th, .table-products td { border: 1px solid #e1e4e8; padding: 8px 10px; text-align: left; }
-.table-products thead th { background: #f0f3f6; font-weight: 600; }
+.table-products { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+.table-products th, .table-products td { border: 1px solid #e1e4e8; padding: 4px 6px; text-align: left; font-size: 13px; line-height: 1.2; vertical-align: middle; }
+.table-products thead th { background: #f0f3f6; font-weight: 600; padding: 6px 8px; font-size: 13px; }
 .table-products tbody tr:nth-child(even) { background: #fafbfc; }
 /* TR: Düşük stok satırlarını vurgula */
 .table-products tbody tr.low-stock { background: #fff5f5; }
@@ -52,16 +52,38 @@ pre { background: #f6f8fa; padding: 10px; overflow: auto; }
 
   /* TR: Buton stilleri
      TR: 'Listele' butonları için gri ton bir kademe koyulaştırıldı */
-  .btn { cursor: pointer; border: 1px solid var(--border); background: #e5e7eb; color: var(--fg); padding: 8px 12px; border-radius: 6px; transition: background .15s ease, box-shadow .15s ease; }
+  .btn { cursor: pointer; border: 1px solid var(--border); background: #e5e7eb; color: var(--fg); padding: 6px 10px; border-radius: 6px; transition: background .15s ease, box-shadow .15s ease; font-size: 13px; }
   .btn:hover { background: #d1d5db; }
   .btn-primary { background: var(--primary); color: var(--primary-contrast); border-color: var(--primary); }
   .btn-primary:hover { filter: brightness(0.95); }
-  .btn-del { background: #ef4444; color: #fff; border-color: #ef4444; padding: 6px 10px; border-radius: 6px; }
+  .btn-del { background: #ef4444; color: #fff; border-color: #ef4444; padding: 5px 8px; border-radius: 6px; font-size: 12px; }
   .btn-del:hover { filter: brightness(0.95); }
 
   /* TR: Giriş alanları için zarif çerçeve */
   input, select, textarea { border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--fg); }
   input:focus, select:focus, textarea:focus { outline: 2px solid rgba(37,99,235,0.25); border-color: var(--primary); }
+
+  /* TR: Tablo içi inputları kompaktlaştır ve hücreye sığdır */
+  .table-products input[type="text"],
+  .table-products input[type="number"],
+  .table-products select,
+  .table-products textarea { padding: 4px 6px; font-size: 12px; line-height: 1.2; height: 28px; max-width: 160px; width: 100%; box-sizing: border-box; }
+  .table-products input[type="file"] { font-size: 12px; padding: 2px; }
+  .table-products code { font-size: 12px; }
+
+  /* TR: Ürün resmi önizleme boyutunu küçült */
+  .table-products .img-cell img { width: 36px !important; height: 36px !important; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
+
+  /* TR: Sütun genişlikleri (3: Resim, 4: Orijinal PN, 5: China PN) */
+  .table-products thead th:nth-child(3),
+  .table-products tbody td:nth-child(3) { width: 80px; }
+  .table-products thead th:nth-child(4),
+  .table-products tbody td:nth-child(4) { width: 180px; }
+  .table-products thead th:nth-child(5),
+  .table-products tbody td:nth-child(5) { width: 180px; }
+
+  /* TR: Uzun içerikleri kırpmak için ellipsis */
+  .table-products td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* TR: Tablo kullanışlılık */
   .table-products tbody tr:hover { background: #eef2ff; }
@@ -75,7 +97,7 @@ pre { background: #f6f8fa; padding: 10px; overflow: auto; }
   /* TR: Sayfalama (pagination) */
   .pagination { display: flex; gap: 6px; align-items: center; justify-content: flex-end; margin-top: 8px; }
   .pagination .page-info { font-size: 13px; color: var(--muted); margin-right: auto; }
-  .pagination .btn { padding: 6px 10px; }
+  .pagination .btn { padding: 4px 8px; font-size: 12px; }
 
   /* TR: Kapsayıcıyı tam genişlik yap; kenarlardan nefes aldır */
   .container { max-width: 100%; margin: 0 auto; padding: 0 16px; }

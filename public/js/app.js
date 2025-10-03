@@ -131,6 +131,9 @@ function renderProducts() {
       <tr>
         <th>Üretici Firma</th>
         <th>SKU</th>
+        <th>Ürün Resmi</th>
+        <th>Orijinal Part Number</th>
+        <th>China Part Number</th>
         <th>Fatura No</th>
         <th>Mevcut Stok</th>
         <th>Uyarı Stok Sayısı</th>
@@ -153,10 +156,21 @@ function renderProducts() {
     const invoiceCell = invNo ? (invUrl ? `<a href="${invUrl}" target="_blank">${invNo}</a>` : invNo) : '';
     // TR: Üretici Firma: En güncel alıştan tedarikçi adı — SKU üzerinden bulunur
     const supInfo = (window.__productSupplierMap && window.__productSupplierMap[skuKey]) || '';
+    const imgUrl = r.image_path ? `/uploads/${String(r.image_path)}` : '';
+    const imgCell = `
+      <div class="img-cell">
+        ${imgUrl ? `<a href="${imgUrl}" target="_blank"><img src="${imgUrl}" alt="img" style="width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid #ddd;"/></a>` : '<span style="color:#888;">Yok</span>'}
+        <input type="file" accept="image/*" class="product-image-input" data-id="${r.id}" style="display:block;margin-top:4px;" />
+      </div>`;
+    const opn = String(r.original_part_number || '');
+    const cpn = String(r.china_part_number || '');
     return `
       <tr class="${trClass}">
         <td>${supInfo}</td>
         <td><code>${(r.sku ?? '')}</code></td>
+        <td>${imgCell}</td>
+        <td><input type="text" class="prod-field" data-sku="${r.sku || ''}" data-field="original_part_number" value="${opn.replace(/"/g,'&quot;')}" /></td>
+        <td><input type="text" class="prod-field" data-sku="${r.sku || ''}" data-field="china_part_number" value="${cpn.replace(/"/g,'&quot;')}" /></td>
         <td>${invoiceCell}</td>
         <td>${cs}</td>
         <td>${ms}</td>
@@ -167,13 +181,50 @@ function renderProducts() {
     <table class="table-products">
       ${headerHtml}
       <tbody>
-        ${bodyHtml || '<tr><td colspan="6">Kayıt bulunamadı</td></tr>'}
+        ${bodyHtml || '<tr><td colspan="9">Kayıt bulunamadı</td></tr>'}
       </tbody>
     </table>
     <div class="legend"><span class="legend-box low"></span> Düşük stok (mevcut <= uyarı)</div>
   `;
   // TR: Sayfalama kontrolünü render et
   renderProductsPagination({ total, page: state.page, pageSize, maxPage });
+
+  // TR: Satır içi input eventleri bağla (Orijinal/China Part Number)
+  try {
+    container.querySelectorAll('input.prod-field').forEach(inp => {
+      const sku = inp.getAttribute('data-sku');
+      const field = inp.getAttribute('data-field');
+      inp.addEventListener('change', async () => {
+        const value = inp.value || null;
+        try {
+          await upsertProductFieldsBySku(sku, { [field]: value });
+          // Başarılıysa sessizce yenileyelim
+          await listProducts();
+        } catch (e) {
+          alert('Güncelleme başarısız');
+        }
+      });
+    });
+  } catch {}
+
+  // TR: Resim yükleme inputlarını bağla
+  try {
+    container.querySelectorAll('input.product-image-input').forEach(inp => {
+      const id = inp.getAttribute('data-id');
+      inp.addEventListener('change', async () => {
+        const file = inp.files && inp.files[0];
+        if (!file) return;
+        try {
+          await uploadProductImage(id, file);
+          await listProducts();
+        } catch (e) {
+          alert('Resim yükleme başarısız');
+        } finally {
+          inp.value = '';
+        }
+      });
+    });
+  } catch {}
 }
 
 // TR: Sayfalama butonlarını ve sayfa bilgisini üret
@@ -529,3 +580,26 @@ async function deletePurchase(id) {
   try { await listPurchases(); } catch {}
 }
 window.deletePurchase = deletePurchase;
+
+// ========== Yardımcılar ==========
+async function upsertProductFieldsBySku(sku, fields) {
+  if (!sku) throw new Error('sku required');
+  const payload = { sku, ...fields };
+  const res = await fetch('/api/products/public-upsert', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'upsert failed');
+  return data;
+}
+
+async function uploadProductImage(id, file) {
+  const form = new FormData();
+  form.append('image', file);
+  const res = await fetch(`/api/products/${id}/image`, { method: 'POST', body: form });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'upload failed');
+  return data;
+}
