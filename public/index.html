@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stok Takip Test UI</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align: center;">STOK ve FATURA TAKİP</h1>
+
+    <!-- Giriş bölümü kaldırıldı; uygulama artık login gerektirmeyecek -->
+
+  <!-- TR: İki sütunlu düzen: Sol sütunda ürün işlemleri, sağ sütunda alış işlemleri -->
+  <div class="row">
+    <!-- TR: SOL SÜTUN - Ürün güncelle ve listele -->
+    <div class="col">
+      <fieldset>
+        <legend><b>Ürün Güncelle</b></legend>
+        <input id="p_name" placeholder="Ürün adı" />
+        <input id="p_sku" placeholder="SKU" />
+        <!-- TR: Tüm ürünler 'Adet' biriminde kabul edilir; birim/kategori/lokasyon alanları kaldırıldı -->
+        <input id="p_quantity" placeholder="Adet (mevcut stok)" />
+        <!-- TR: Mevcut stok adetini güncellemek/girmek için alan. Boş ise değişmez. -->
+        <input id="p_min_stock" placeholder="Minimum stok seviyesi" value="0" />
+        <!-- TR: Ürün için opsiyonel not alanı -->
+        <input id="p_note" placeholder="Not (opsiyonel)" />
+        <button class="btn btn-primary" onclick="createProduct()"><b>Ürün Güncelle</b></button>
+      </fieldset>
+
+      <!-- TR: Ürünleri Listele alanı -->
+      <fieldset>
+        <legend><b>Ürünleri Listele</b></legend>
+        <button class="btn" onclick="listProducts()"><b>Listele</b></button>
+        <!-- TR: Ürün listesi için arama/filtre/sayfa araç çubuğu -->
+        <div class="toolbar">
+          <input id="products_search" class="grow" placeholder="Ara: isim veya SKU" />
+          <label class="inline"><input id="products_low_only" type="checkbox" /> Sadece düşük stok</label>
+          <div class="inline">
+            <span>Sayfa boyutu:</span>
+            <select id="products_page_size">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+        </div>
+        <!-- TR: Ürün listesi tablo şeklinde gösterilecek -->
+        <div id="products_table_container"></div>
+        <!-- TR: Ürünler için sayfalama alanı -->
+        <div id="products_pagination" class="pagination"></div>
+      </fieldset>
+    </div>
+
+    <!-- TR: SAĞ SÜTUN - Alış ekle ve listele -->
+    <div class="col">
+      <!-- TR: Alış Ekle alanı -->
+      <fieldset>
+        <legend><b>Alış Ekle</b></legend>
+        <input id="s2_name" placeholder="Tedarikçi adı" />
+        <!-- TR: Email/Telefon/Adres alanları kaldırıldı -->
+        <input id="purchase_date" placeholder="Alış tarihi (YYYY-MM-DD)" />
+        <input id="invoice_number" placeholder="Fatura No" />
+        <input id="invoice_file" type="file" />
+        <textarea id="purchase_note" placeholder="Not (opsiyonel)"></textarea>
+
+        <h4>Kalem 1</h4>
+        <!-- TR: İşlemi yapan kişi seçimi -->
+        <label for="created_by">İşlemi Yapan</label>
+        <select id="created_by">
+          <option value="">Seçiniz</option>
+          <option value="Özlem">Özlem</option>
+          <option value="Murat Çağdaş">Murat Çağdaş</option>
+        </select>
+        <!-- TR: Kalem alanları Ürün Güncelle ile uyumlu; birim kaldırıldı (varsayılan 'Adet') -->
+        <input id="item1_name" placeholder="Ürün adı" />
+        <input id="item1_sku" placeholder="SKU" />
+        <input id="item1_quantity" placeholder="Miktar" />
+        <input id="item1_unit_price" placeholder="Birim Fiyat" />
+
+        <button class="btn btn-primary" onclick="createPurchase()"><b>Alış Oluştur</b></button>
+      </fieldset>
+
+      <!-- TR: Alışları Listele alanı -->
+      <fieldset>
+        <legend><b>Alışları Listele</b></legend>
+        <button class="btn" onclick="listPurchases()"><b>Listele</b></button>
+        <!-- TR: Alış listesi tablo şeklinde gösterilecek -->
+        <div id="purchases_table_container"></div>
+      </fieldset>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

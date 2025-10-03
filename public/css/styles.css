@@ -1,0 +1,102 @@
+body { font-family: Arial, sans-serif; margin: 20px; }
+fieldset { margin-bottom: 20px; }
+input, select, button, textarea { margin: 4px 0; padding: 6px; width: 100%; max-width: 420px; }
+.row { display: flex; gap: 10px; }
+.col { flex: 1; }
+pre { background: #f6f8fa; padding: 10px; overflow: auto; }
+
+/* TR: Ürün tablosu için temel stiller */
+.table-products { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.table-products th, .table-products td { border: 1px solid #e1e4e8; padding: 8px 10px; text-align: left; }
+.table-products thead th { background: #f0f3f6; font-weight: 600; }
+.table-products tbody tr:nth-child(even) { background: #fafbfc; }
+/* TR: Düşük stok satırlarını vurgula */
+.table-products tbody tr.low-stock { background: #fff5f5; }
+.table-products tbody tr.low-stock td { color: #8b0000; }
+
+  /* TR: Tablo altı açıklama (legend) */
+  .legend { margin-top: 6px; font-size: 12px; color: #555; display: flex; align-items: center; gap: 6px; }
+  .legend-box { display: inline-block; width: 12px; height: 12px; border: 1px solid #ddd; }
+  .legend-box.low { background: #fff5f5; border-color: #e0b4b4; }
+  
+  /* TR: Genel görünümü yumuşatmak için küçük UX iyileştirmeleri */
+  :root {
+    /* TR: Açık tema renk değişkenleri */
+    --bg: #f7f9fc;
+    --fg: #1f2937;
+    --muted: #6b7280;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --primary: #2563eb;
+    --primary-contrast: #ffffff;
+  }
+
+  body { background: var(--bg); color: var(--fg); }
+  fieldset {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  /* TR: Başlıkların siyah görünmesi için legend rengi siyah yapıldı */
+  legend { padding: 0 6px; color: #000; }
+
+  /* TR: Sayfa ana başlığı (h1) siyah */
+  h1 { color: #000; }
+
+  /* TR: Araç çubuğu (arama + filtre) */
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 8px; }
+  .toolbar .grow { flex: 1 1 220px; }
+  .toolbar .inline { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 14px; }
+
+  /* TR: Buton stilleri
+     TR: 'Listele' butonları için gri ton bir kademe koyulaştırıldı */
+  .btn { cursor: pointer; border: 1px solid var(--border); background: #e5e7eb; color: var(--fg); padding: 8px 12px; border-radius: 6px; transition: background .15s ease, box-shadow .15s ease; }
+  .btn:hover { background: #d1d5db; }
+  .btn-primary { background: var(--primary); color: var(--primary-contrast); border-color: var(--primary); }
+  .btn-primary:hover { filter: brightness(0.95); }
+  .btn-del { background: #ef4444; color: #fff; border-color: #ef4444; padding: 6px 10px; border-radius: 6px; }
+  .btn-del:hover { filter: brightness(0.95); }
+
+  /* TR: Giriş alanları için zarif çerçeve */
+  input, select, textarea { border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--fg); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid rgba(37,99,235,0.25); border-color: var(--primary); }
+
+  /* TR: Tablo kullanışlılık */
+  .table-products tbody tr:hover { background: #eef2ff; }
+  .table-products thead th { position: sticky; top: 0; z-index: 1; }
+  .table-products { border-radius: 8px; overflow: hidden; background: #fff; }
+
+  /* TR: Rozetler (mevcutta kullanılan .badge-file dahil) */
+  .badge { display: inline-block; font-size: 12px; padding: 2px 6px; border-radius: 999px; background: #e5e7eb; color: #374151; }
+  .badge-file { background: #d1fae5; color: #065f46; }
+
+  /* TR: Sayfalama (pagination) */
+  .pagination { display: flex; gap: 6px; align-items: center; justify-content: flex-end; margin-top: 8px; }
+  .pagination .page-info { font-size: 13px; color: var(--muted); margin-right: auto; }
+  .pagination .btn { padding: 6px 10px; }
+
+  /* TR: Kapsayıcıyı tam genişlik yap; kenarlardan nefes aldır */
+  .container { max-width: 100%; margin: 0 auto; padding: 0 16px; }
+
+  /* TR: Küçük ekranlarda iki sütunu alt alta getir */
+  @media (max-width: 768px) {
+    .row { flex-direction: column; }
+  }
+
+  /* TR: Sütunları eşit genişlikte yap (50% / 50%) */
+  .row > .col:first-child,
+  .row > .col:last-child { flex: 1 1 0; }
+
+  /* TR: Her iki sütundaki form elemanları tam genişlik kullansın */
+  .row > .col input,
+  .row > .col select,
+  .row > .col textarea { max-width: 100%; }
+
+  /* TR: İki sütun düzeni (sol: ürünler, sağ: alışlar) */
+  .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  /* TR: Küçük ekranlarda tek sütuna düş */
+  @media (max-width: 900px) {
+    .grid-two { grid-template-columns: 1fr; }
+  }

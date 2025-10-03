@@ -1,0 +1,58 @@
+# TR: Node.js projeleri için genel .gitignore
+
+# TR: Bağımlılıklar
+node_modules/
+
+# TR: Log dosyaları
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# TR: Çıktı / derleme klasörleri
+build/
+dist/
+out/
+.tmp/
+tmp/
+temp/
+.cache/
+
+# TR: Framework/araç özel klasörleri
+.next/
+.nuxt/
+.turbo/
+.vite/
+vite-dist/
+.parcel-cache/
+.serverless/
+.docusaurus/
+
+# TR: Test ve kapsam çıktıları
+coverage/
+.nyc_output/
+
+# TR: Linter/araç önbellekleri
+.eslintcache
+.stylelintcache
+.tsbuildinfo
+
+# TR: Ortam değişkenleri (gizli bilgiler)
+.env
+.env.*
+!.env.example
+
+# TR: Yüklenen dosyalar (fatura vb.)
+uploads/
+
+# TR: Sistem/OS dosyaları
+.DS_Store
+Thumbs.db
+
+# TR: IDE/Editor ayarları
+.vscode/
+.idea/
