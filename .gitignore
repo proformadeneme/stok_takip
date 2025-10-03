@@ -41,10 +41,6 @@ coverage/
 .stylelintcache
 .tsbuildinfo
 
-# TR: Ortam değişkenleri (gizli bilgiler)
-.env
-.env.*
-!.env.example
 
 # TR: Yüklenen dosyalar (fatura vb.)
 uploads/
